@@ -7,43 +7,56 @@ var basePath = __dirname;
 
 module.exports = {
   context: path.join(basePath, 'src'),
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx']
+  },
   entry: {
-    app: './students.js',
+    app: './students.tsx',
     appStyles: [
       './mystyles.scss',
     ],
     vendor: [
       'jquery',
+      'react',
+      'react-dom',
     ],
     vendorStyles: [
-      '../node_modules/bootstrap/dist/css/bootstrap.css', 
+      '../node_modules/bootstrap/dist/css/bootstrap.css',
     ]
   },
-  output: {        
-    filename: './js/[name].[chunkhash].js',    
+  output: {
+    filename: './js/[name].[chunkhash].js',
   },
   module: {
     rules: [
       {
-        test: /\.js$/,                
+        test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
       },
-      {  
-        test: /\.css$/, 
-        include: /node_modules/,               
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        loader: 'awesome-typescript-loader',
+        options: {
+          useBabel: true,
+        },
+      },
+      {
+        test: /\.css$/,
+        include: /node_modules/,
         use: [
-              MiniCssExtractPlugin.loader, 
-              "css-loader"
+          MiniCssExtractPlugin.loader,
+          "css-loader"
         ]
-      },  
+      },
       {
         test: /\.scss$/,
         exclude: /node_modules/,
         use: [
-          {loader: MiniCssExtractPlugin.loader},
-          {loader: 'css-loader'},
-          {loader: 'sass-loader'}
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: 'css-loader' },
+          { loader: 'sass-loader' }
         ]
       },
       {
@@ -52,7 +65,7 @@ module.exports = {
         use: {
           loader: 'url-loader',
           options: {
-            limit:5000,
+            limit: 5000,
             name: './img/[hash].[name].[ext]'
           }
         },
@@ -75,8 +88,8 @@ module.exports = {
       jQuery: 'jquery',
     }),
     new MiniCssExtractPlugin({
-      filename: "./css/[name].[chunkhash].css",      
+      filename: "./css/[name].[chunkhash].css",
       chunkFilename: "[id].css"
-    })    
+    })
   ]
 }
